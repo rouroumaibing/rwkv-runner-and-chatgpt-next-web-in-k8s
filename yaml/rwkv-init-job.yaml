@@ -1,0 +1,41 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  enable: true
+  name: rwkv-init-job
+  namespace: default
+spec:
+  completions: 1
+  parallelism: 1
+  activeDeadlineSeconds: null
+  template:
+    metadata:
+      enable: true
+      name: rwkv-init-job
+      labels:
+        app: rwkv-init-job
+        version: v1
+    spec:
+      containers:
+        - name: container-1
+          image: rwkv-model-switch:1.0
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: MODEL_NAME
+              value: RWKV-4-World-0.1B-v1-20230520-ctx4096.pth
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: 250m
+              memory: 512Mi
+      imagePullSecrets:
+        - name: default-secret
+      restartPolicy: OnFailure
+      volumes: []
+      dnsConfig:
+        options:
+          - name: single-request-reopen
+      initContainers: []
+  completionMode: NonIndexed
