@@ -7,6 +7,8 @@ wget https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/${MODEL}
 tar -zxvf v${TAG}.tar.gz
 mv RWKV-Runner-${TAG} rwkv-runner
 
+#change service addr
+sed -i "s/127.0.0.1/0.0.0.0/g" rwkv-runner/backend-python/main.py
 
 cat > Dockerfile <<EOF
 FROM python:3.10.0

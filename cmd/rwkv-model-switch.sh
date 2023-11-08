@@ -5,12 +5,11 @@ cat > rwkv-switch-model.sh << "EOF"
 #!/bin/bash
 
 check_success() {
-  tmp_name=$1
   status_code=$(
-    curl -m 5 -s -o /dev/null -w %{http_code} http://rwkv-runner-svc/switch-model -X POST -H "Content-Type: application/json" -d '{"model":"/rwkv-runner-svc/models/'${tmp_name}'","strategy":"cpu fp32"}'
+    curl -m 5 -s -o /dev/null -w %{http_code} http://rwkv-runner-svc/switch-model -X POST -H "Content-Type: application/json" -d '{"model":"/rwkv-runner-svc/models/'${MODEL_NAME}'","strategy":"cpu fp32"}'
   )
 }
-check_success ${MODEL_NAME}
+check_success 
 echo "time：`date '+%Y%m%d %H:%M:%S'`--$status_code"
 while [ $status_code -ne 200 ]
 do
